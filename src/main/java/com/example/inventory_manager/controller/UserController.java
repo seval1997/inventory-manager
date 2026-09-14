@@ -1,14 +1,14 @@
 package com.example.inventory_manager.controller;
 
+import com.example.inventory_manager.dto.request.UpdateProfileRequest;
 import com.example.inventory_manager.dto.response.UserResponse;
 import com.example.inventory_manager.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,6 +25,12 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserResponse userResponse = userService.getProfile(username);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity<UserResponse> updateMyProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
+        UserResponse userResponse = userService.updateMyProfile(updateProfileRequest);
+        return ResponseEntity.ok(userResponse);
     }
 
 
