@@ -1,5 +1,6 @@
 package com.example.inventory_manager.dto.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 
 public class UpdateProfileRequest {

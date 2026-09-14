@@ -6,13 +6,25 @@ import jakarta.validation.constraints.Size;
 public class ChangePasswordRequest {
     @NotBlank(message = "Password can't be blank")
     @Size(min = 8, message = "Password must be at least 8 characters")
-    private String password;
+    private String currentPassword;
 
-    public String getPassword() {
-        return password;
+    @NotBlank(message = "Password can't be blank")
+    @Size(min = 8, message = "Password must be at least 8 characters")
+    private String newPassword;
+
+    public String getCurrentPassword() {
+        return currentPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }

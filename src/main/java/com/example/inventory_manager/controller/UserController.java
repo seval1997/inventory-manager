@@ -1,6 +1,8 @@
 package com.example.inventory_manager.controller;
 
+import com.example.inventory_manager.dto.request.ChangePasswordRequest;
 import com.example.inventory_manager.dto.request.UpdateProfileRequest;
+import com.example.inventory_manager.dto.response.MessageResponse;
 import com.example.inventory_manager.dto.response.UserResponse;
 import com.example.inventory_manager.service.UserService;
 import jakarta.validation.Valid;
@@ -31,6 +33,14 @@ public class UserController {
     public ResponseEntity<UserResponse> updateMyProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
         UserResponse userResponse = userService.updateMyProfile(updateProfileRequest);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @PatchMapping("/me/password")
+    public ResponseEntity<MessageResponse> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        userService.changeMyPassword(changePasswordRequest);
+        MessageResponse response = new MessageResponse();
+        response.setMessage("Password changed successfully.");
+        return ResponseEntity.ok(response);
     }
 
 
