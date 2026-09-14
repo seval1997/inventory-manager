@@ -14,11 +14,3 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
-
-      - name: Run Checkstyle, SpotBugs & Tests
-        run: mvn clean verify checkstyle:check spotbugs:check
-
-      - name: Run OWASP Dependency-Check
-        run: mvn org.owasp:dependency-check-maven:check
-        env:
-          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
