@@ -1,5 +1,7 @@
 package com.example.inventory_manager.dto.response;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class ErrorResponse {
     private Map<String, String> fieldErrors;
 
 
-
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ErrorResponse(int status, String error, String message, String path) {
         this.timestamp = LocalDateTime.now();
         this.status = status;

@@ -6,6 +6,7 @@ import com.example.inventory_manager.dto.response.PlatformResponse;
 import com.example.inventory_manager.entity.Platform;
 import com.example.inventory_manager.service.PlatformService;
 import com.example.inventory_manager.service.imp.PlatformServiceImp;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ public class PlatformController {
 
     private final PlatformService platformService;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public PlatformController(PlatformService platformService) {
         this.platformService = platformService;
     }
