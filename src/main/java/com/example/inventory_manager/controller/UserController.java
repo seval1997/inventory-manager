@@ -6,7 +6,11 @@ import com.example.inventory_manager.dto.response.MessageResponse;
 import com.example.inventory_manager.dto.response.UserResponse;
 import com.example.inventory_manager.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +45,22 @@ public class UserController {
         MessageResponse response = new MessageResponse();
         response.setMessage("Password changed successfully.");
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        MessageResponse response = new MessageResponse();
+        response.setMessage("User deleted");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable) {
+        Page<UserResponse> users = userService.getAllUsers(pageable);
+        return ResponseEntity.ok(users);
     }
 
 

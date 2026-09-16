@@ -101,6 +101,8 @@ INSERT INTO users (id, username, email, password, role, created_at) VALUES
 (99, 'edward.rodriguez99', 'edward.rodriguez99@intelcorp.example.com', '$2a$10$hashedPlaceholder99', 'USER', '2025-09-13 00:00:00'),
 (100, 'steven.harris100', 'steven.harris100@intelcorp.example.com', '$2a$10$hashedPlaceholder100', 'USER', '2025-03-19 00:00:00');
 
+update users set password = 'seval@123' where id = 1;
+
 -- 2. PLATFORMS
 INSERT INTO platforms (id, name, description) VALUES
 (1, 'NVL', 'Next-gen validation line platform'),
