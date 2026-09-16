@@ -1,6 +1,7 @@
 package com.example.inventory_manager.dto.response;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Map;
 
 public class ErrorResponse {
@@ -11,6 +12,8 @@ public class ErrorResponse {
     private String message;
     private String path;
     private Map<String, String> fieldErrors;
+
+
 
     public ErrorResponse(int status, String error, String message, String path) {
         this.timestamp = LocalDateTime.now();
@@ -30,5 +33,5 @@ public class ErrorResponse {
     public String getError() { return error; }
     public String getMessage() { return message; }
     public String getPath() { return path; }
-    public Map<String, String> getFieldErrors() { return fieldErrors; }
+    public Map<String, String> getFieldErrors() { return fieldErrors != null ? Collections.unmodifiableMap(fieldErrors) : null; }
 }
