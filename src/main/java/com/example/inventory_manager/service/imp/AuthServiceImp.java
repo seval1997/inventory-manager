@@ -2,12 +2,15 @@ package com.example.inventory_manager.service.imp;
 
 import com.example.inventory_manager.dto.request.LoginRequest;
 import com.example.inventory_manager.dto.request.RegisterRequest;
-import com.example.inventory_manager.dto.response.AuthResponse;
+import com.example.inventory_manager.dto.response.AddUserResponse;
+import com.example.inventory_manager.dto.response.LoginResponse;
 import com.example.inventory_manager.entity.User;
 import com.example.inventory_manager.entity.enums.Role;
+import com.example.inventory_manager.exception.GlobalExceptionHandler;
 import com.example.inventory_manager.repository.UserRepository;
 import com.example.inventory_manager.security.JwtUtil;
 import com.example.inventory_manager.service.AuthService;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,14 +20,16 @@ public class AuthServiceImp implements AuthService {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final GlobalExceptionHandler exceptionHandler;
 
-    public AuthServiceImp(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthServiceImp(UserRepository userRepository, JwtUtil jwtUtil, GlobalExceptionHandler exceptionHandler) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.exceptionHandler = exceptionHandler;
     }
 
     @Override
-    public AuthResponse register(RegisterRequest request) {
+    public AddUserResponse register(RegisterRequest request) {
         if(userRepository.existsByUsername(request.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
@@ -40,22 +45,20 @@ public class AuthServiceImp implements AuthService {
         user.setRole(Role.USER);
         user.setCreateAt(LocalDateTime.now());
         userRepository.save(user);
-
-        String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
-        return new AuthResponse(token, user.getUsername(), user.getRole().name());
+        return new AddUserResponse(user.getUsername(), user.getRole().name());
 
     }
 
     @Override
-    public AuthResponse login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+                .orElseThrow(() -> new BadCredentialsException("Invalid Username or Password"));
 
         if(!user.getPassword().matches(request.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
+            throw new BadCredentialsException("Invalid Username or Password");
         }
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
-        return new AuthResponse(token, user.getUsername(), user.getRole().name());
+        return new LoginResponse(token, user.getUsername(), user.getRole().name());
     }
 }

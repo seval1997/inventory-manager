@@ -1,6 +1,7 @@
 package com.example.inventory_manager.config;
 
 import com.example.inventory_manager.security.JwtAuthenticationFilter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -19,6 +20,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter; // Inject your JWT filter
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public SecurityConfig(JwtAuthenticationFilter filter) {
         this.jwtAuthenticationFilter = filter;
     }

@@ -1,22 +1,21 @@
-package com.example.inventory_manager.entity;
+package com.example.inventory_manager.dto.response;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "platforms")
-@SuppressFBWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
-public class Platform {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PlatformResponse {
     Long id;
-
-    @Column(name = "name", unique = true)
     String name;
-
-    @Column(name = "description", nullable = true)
     String description;
+
+    public PlatformResponse(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+
+    public PlatformResponse(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,9 @@
 package com.example.inventory_manager.dto.response;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Map;
 
 public class ErrorResponse {
@@ -12,6 +15,8 @@ public class ErrorResponse {
     private String path;
     private Map<String, String> fieldErrors;
 
+
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ErrorResponse(int status, String error, String message, String path) {
         this.timestamp = LocalDateTime.now();
         this.status = status;
@@ -20,6 +25,7 @@ public class ErrorResponse {
         this.path = path;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ErrorResponse(int status, String error, String message, String path, Map<String, String> fieldErrors) {
         this(status, error, message, path);
         this.fieldErrors = fieldErrors;
@@ -30,5 +36,5 @@ public class ErrorResponse {
     public String getError() { return error; }
     public String getMessage() { return message; }
     public String getPath() { return path; }
-    public Map<String, String> getFieldErrors() { return fieldErrors; }
+    public Map<String, String> getFieldErrors() { return fieldErrors != null ? Collections.unmodifiableMap(fieldErrors) : null; }
 }

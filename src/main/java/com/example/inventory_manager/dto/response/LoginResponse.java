@@ -1,14 +1,15 @@
 package com.example.inventory_manager.dto.response;
 
-public class AuthResponse {
+import com.example.inventory_manager.entity.enums.Role;
 
-    private String token;
-    private String username;
-    private String role;
+public class LoginResponse {
+    String token;
+    String username;
+    String role;
 
-    public AuthResponse(String token, String username, String role) {
-        this.username = username;
+    public LoginResponse(String token, String username, String role) {
         this.token = token;
+        this.username = username;
         this.role = role;
     }
 

@@ -5,6 +5,7 @@ import com.example.inventory_manager.dto.request.UpdateProfileRequest;
 import com.example.inventory_manager.dto.response.MessageResponse;
 import com.example.inventory_manager.dto.response.UserResponse;
 import com.example.inventory_manager.service.UserService;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public UserController(UserService userService) {
         this.userService = userService;
     }
