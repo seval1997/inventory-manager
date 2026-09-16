@@ -6,6 +6,8 @@ import com.example.inventory_manager.dto.response.MessageResponse;
 import com.example.inventory_manager.dto.response.UserResponse;
 import com.example.inventory_manager.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,6 +54,13 @@ public class UserController {
         MessageResponse response = new MessageResponse();
         response.setMessage("User deleted");
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable) {
+        Page<UserResponse> users = userService.getAllUsers(pageable);
+        return ResponseEntity.ok(users);
     }
 
 

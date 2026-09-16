@@ -74,6 +74,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Page<UserResponse> getAllUsers(Pageable pageable) {
-        return null;
+        return userRepository.findAll(pageable)
+                .map(user -> new UserResponse(user.getUsername(), user.getEmail(), user.getRole()));
     }
 }
