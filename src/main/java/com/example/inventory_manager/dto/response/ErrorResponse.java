@@ -25,6 +25,7 @@ public class ErrorResponse {
         this.path = path;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ErrorResponse(int status, String error, String message, String path, Map<String, String> fieldErrors) {
         this(status, error, message, path);
         this.fieldErrors = fieldErrors;
