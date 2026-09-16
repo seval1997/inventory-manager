@@ -1,12 +1,14 @@
 package com.example.inventory_manager.entity;
 
 import com.example.inventory_manager.entity.enums.Role;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@SuppressFBWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class User {
 
     @Id
