@@ -2,7 +2,8 @@ package com.example.inventory_manager.controller;
 
 import com.example.inventory_manager.dto.request.LoginRequest;
 import com.example.inventory_manager.dto.request.RegisterRequest;
-import com.example.inventory_manager.dto.response.AuthResponse;
+import com.example.inventory_manager.dto.response.AddUserResponse;
+import com.example.inventory_manager.dto.response.LoginResponse;
 import com.example.inventory_manager.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        AuthResponse authResponse = authService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
+    public ResponseEntity<AddUserResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        AddUserResponse addUserResponse = authService.register(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addUserResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        AuthResponse authResponse = authService.login(loginRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(authResponse);
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = authService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
     }
 }
