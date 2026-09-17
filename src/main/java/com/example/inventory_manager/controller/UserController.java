@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,20 +33,22 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getMyProfile() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserResponse userResponse = userService.getProfile(username);
+        String username = getAuthenticatedUser();
+        UserResponse userResponse = userService.getMyProfile(username);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
     @PatchMapping("/me")
     public ResponseEntity<UserResponse> updateMyProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
-        UserResponse userResponse = userService.updateMyProfile(updateProfileRequest);
+        String username = getAuthenticatedUser();
+        UserResponse userResponse = userService.updateMyProfile(username, updateProfileRequest);
         return ResponseEntity.ok(userResponse);
     }
 
     @PatchMapping("/me/password")
     public ResponseEntity<MessageResponse> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-        userService.changeMyPassword(changePasswordRequest);
+        String username = getAuthenticatedUser();
+        userService.changeMyPassword(username, changePasswordRequest);
         MessageResponse response = new MessageResponse();
         response.setMessage("Password changed successfully.");
         return ResponseEntity.ok(response);
@@ -61,8 +66,18 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable) {
+        getAuthenticatedUser();
         Page<UserResponse> users = userService.getAllUsers(pageable);
         return ResponseEntity.ok(users);
+    }
+
+    public String getAuthenticatedUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) {
+            throw new AuthenticationException("User not authenticated") {
+            };
+        }
+        return authentication.getName();
     }
 
 

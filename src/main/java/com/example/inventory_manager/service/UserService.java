@@ -9,10 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    UserResponse getMyProfile();
-    UserResponse getProfile(String username);
-    UserResponse updateMyProfile(UpdateProfileRequest request);
-    void changeMyPassword(ChangePasswordRequest request);
+    UserResponse getMyProfile(String username);
+    UserResponse updateMyProfile(String username, UpdateProfileRequest request);
+    void changeMyPassword(String username, ChangePasswordRequest request);
 
     void deleteUser(Long id);
     UserResponse changeUserRole(Long id, Role role);

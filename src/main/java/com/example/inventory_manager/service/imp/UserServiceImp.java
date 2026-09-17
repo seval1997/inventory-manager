@@ -7,10 +7,11 @@ import com.example.inventory_manager.dto.response.UserResponse;
 import com.example.inventory_manager.entity.User;
 import com.example.inventory_manager.entity.enums.Role;
 import com.example.inventory_manager.repository.UserRepository;
-import com.example.inventory_manager.security.JwtUtil;
 import com.example.inventory_manager.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,27 +20,20 @@ import org.springframework.stereotype.Service;
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
-    private final SecurityConfig securityConfig;
 
-    public UserServiceImp(UserRepository userRepository, SecurityConfig securityConfig) {
+    public UserServiceImp(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.securityConfig = securityConfig;
     }
 
-    @Override
-    public UserResponse getMyProfile() {
-        return null;
-    }
 
     @Override
-    public UserResponse getProfile(String username) {
+    public UserResponse getMyProfile(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Invalid Username"));
         return new UserResponse(user.getUsername(), user.getEmail(), user.getRole());
     }
 
     @Override
-    public UserResponse updateMyProfile(UpdateProfileRequest request) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public UserResponse updateMyProfile(String username, UpdateProfileRequest request) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Invalid User"));
         user.setEmail(request.getEmail());
         userRepository.save(user);
@@ -47,8 +41,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void changeMyPassword(ChangePasswordRequest request) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public void changeMyPassword(String username, ChangePasswordRequest request) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Invalid User"));
         if(user.getPassword().matches(request.getCurrentPassword())
                 && !request.getCurrentPassword().equals(request.getNewPassword())) {
