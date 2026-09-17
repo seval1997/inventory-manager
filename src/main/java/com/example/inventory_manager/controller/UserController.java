@@ -70,7 +70,7 @@ public class UserController {
     public ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable) {
         controllerUtil.getAuthenticatedUser();
         Page<UserResponse> users = userService.getAllUsers(pageable);
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(   users);
     }
 
 }
