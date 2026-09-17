@@ -1,7 +1,7 @@
 name: CI Fitness Check
 
 on:
-  pull_request:
+  deployment:
     branches: [ main ]
 
 jobs:
