@@ -51,8 +51,7 @@ public class UserController {
     public ResponseEntity<MessageResponse> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         String username = controllerUtil.getAuthenticatedUser();
         userService.changeMyPassword(username, changePasswordRequest);
-        MessageResponse response = new MessageResponse();
-        response.setMessage("Password changed successfully.");
+        MessageResponse response = new MessageResponse("Password changed successfully");
         return ResponseEntity.ok(response);
     }
 
@@ -60,8 +59,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        MessageResponse response = new MessageResponse();
-        response.setMessage("User deleted");
+        MessageResponse response = new MessageResponse("deleteEvent");
         return ResponseEntity.ok(response);
     }
 
@@ -70,7 +68,7 @@ public class UserController {
     public ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable) {
         controllerUtil.getAuthenticatedUser();
         Page<UserResponse> users = userService.getAllUsers(pageable);
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(   users);
     }
 
 }
